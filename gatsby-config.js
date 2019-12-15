@@ -1,78 +1,35 @@
-require(`ts-node`).register({ files: true })
-
-if (process.env.ENVIROMENT !== `production`) {
-  require(`dotenv`).config({
-    path: `.env.${process.env.NODE_ENV}`,
-  })
-}
-
-const OverlayStyle = {
-  backgroundColor: 'rgba(0, 0, 0, 0.9)',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 999,
-  transition:
-    'visibility 0s ease-in-out 0.2s, opacity 0.2s ease-in-out, transform 0.2s ease-in-out',
-}
-
-const ContentStyle = {
-  zIndex: 1,
-  overflow: 'hidden',
-  maxHeight: '100vh',
-  background: 'rgb(0, 0, 0)',
-  border: '0px',
-  padding: '0',
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-}
-
-var proxy = require('http-proxy-middleware')
+/* eslint-disable */
 module.exports = {
-  developMiddleware: app => {
-    app.use(
-      '/.netlify/functions/',
-      proxy({
-        target: 'http://localhost:9000',
-        secure: false, // Do not reject self-signed certificates.
-        pathRewrite: {
-          '/.netlify/functions/': '',
-        },
-      })
-    )
-  },
   siteMetadata: {
-    title: `Site Meta`,
+    title: `Gatsby Default Starter`,
+    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+    author: `@gatsbyjs`,
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
     {
-      resolve: `gatsby-plugin-layout`,
+      resolve: `gatsby-source-filesystem`,
       options: {
-        component: require.resolve(`./src/App`),
+        name: `images`,
+        path: `${__dirname}/src/images`,
       },
     },
-    `@rhysforyou/gatsby-plugin-react-helmet-async`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `SiteName`,
-        short_name: `ShortName`,
+        name: `gatsby-starter-default`,
+        short_name: `starter`,
         start_url: `/`,
-        background_color: `#000000`,
-        theme_color: `#000000`,
-        display: `browser`,
-        // icon: `src/images/...`,
+        background_color: `#663399`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
-    `gatsby-plugin-offline`,
-    `gatsby-plugin-typescript`,
-    `gatsby-transformer-remark`,
-    `gatsby-plugin-sharp`,
-    `gatsby-transformer-sharp`,
-    {
-      resolve: `gatsby-plugin-emotion`,
-    },
+    // this (optional) plugin enables Progressive Web App + Offline functionality
+    // To learn more, visit: https://gatsby.dev/offline
+    // `gatsby-plugin-offline`,
   ],
 }
